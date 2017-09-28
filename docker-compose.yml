@@ -1,6 +1,14 @@
 version: '2'
-
 services:
   app:
-
     build: .
+    command: go run app.go
+    depends_on:
+      - redis
+    environment:
+      PORT: 3003
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+  redis:
+    image: redis:3.2.10-alpine
