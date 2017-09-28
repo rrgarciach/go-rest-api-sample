@@ -15,7 +15,7 @@ type App struct {
 }
 
 func (a *App) Initialize(addr string, port, db int) {
-	print("Initialize")
+	print("Initialize!")
 	a.Router = mux.NewRouter()
 	a.initializeRoutes()
 }
@@ -29,7 +29,7 @@ func (a *App) initializeRoutes() {
 }
 
 func (a *App) hello(w http.ResponseWriter, r *http.Request) {
-	response := "hi!"
+	response := "HI!!!"
 	respondWithJSON(w, http.StatusOK, response)
 }
 

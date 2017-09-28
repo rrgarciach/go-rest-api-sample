@@ -1,11 +1,10 @@
-FROM golang:1.8.3-alpine3.6
+FROM ntboes/golang-gin
 
-ADD . /home
+ADD . /go/src/app
 
-WORKDIR /home
+WORKDIR /go/src/app
 
 RUN \
-       apk add --no-cache bash git openssh && \
-       go get -u github.com/minio/minio-go github.com/go-redis/redis
+       go get -u github.com/gorilla/mux github.com/go-redis/redis
 
-CMD ["go","run","app.go"]
+CMD ["gin", "run", "main.go"]

@@ -5,9 +5,12 @@ import "strconv"
 import "fmt"
 
 func main() {
-	var REDIS_HOST, REDIS_PORT, REDIS_DB string
+	var PORT, REDIS_HOST, REDIS_PORT, REDIS_DB string
 
-	if REDIS_HOST := os.Getenv("REDIS_HOST"); REDIS_HOST == "" {
+	if PORT = os.Getenv("PORT"); PORT == "" {
+		PORT = "3030"
+	}
+	if REDIS_HOST = os.Getenv("REDIS_HOST"); REDIS_HOST == "" {
 		REDIS_HOST = "localhost"
 	}
 	if REDIS_PORT = os.Getenv("REDIS_PORT"); REDIS_PORT == "" {
@@ -22,10 +25,11 @@ func main() {
 	db, err := strconv.ParseInt(REDIS_DB, 10, 0)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println(PORT)
 	}
 
 	a := App{}
 	a.Initialize(host, int(port), int(db))
 
-	a.Run(":8080")
+	a.Run(":" + PORT)
 }

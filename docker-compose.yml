@@ -1,14 +1,20 @@
 version: '2'
 services:
-  app:
+  web:
     build: .
-    command: go run app.go
-    depends_on:
-      - redis
+    # command: go run app.go
+    command: /go/bin/gin run main.go
+    volumes:
+      - .:/go/src/app
+    working_dir: /go/src/app
+    # depends_on:
+      # - redis
+    ports:
+      - "3030:3000"
     environment:
-      PORT: 3003
+      PORT: 3030
       REDIS_HOST: localhost
       REDIS_PORT: 6379
       REDIS_DB: 0
-  redis:
-    image: redis:3.2.10-alpine
+  # redis:
+    # image: redis:3.2.10-alpine
