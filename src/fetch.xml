@@ -1,0 +1,22 @@
+<fetch>
+  <entity name="com_sample" >
+    <attribute name="com_name" alias="samplenumber" />
+    <attribute name="statuscode" alias="statuscode" />
+    <attribute name="com_trfnumber_txt" alias="trfnumber" />
+   <attribute name="ownerid" alias="owner" />
+ <filter type="and" >
+       <condition attribute="com_trfnumber_txt" operator="in">
+      </condition>
+       <condition attribute="com_trfnumber_txt" operator="in" value="{notpassed}">
+      </condition>
+      <condition attribute="com_trfnumber_txt" operator="in" value="{trfnumbers}">
+      </condition>
+      <condition attribute="other" operator="not-in" value="{other}">
+      </condition>
+      <condition attribute="onemore" operator="between" value="{trfnumbers}">
+      </condition>
+      <condition attribute="last" operator="not-between" value="{trfnumbers}">
+      </condition>
+     </filter>
+  </entity>
+</fetch>
