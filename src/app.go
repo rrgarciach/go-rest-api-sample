@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -28,20 +27,19 @@ func (a *App) Run(addr string) {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/hello", a.hello).Methods("GET")
+	a.Router.HandleFunc("/xsltproc", a.hello).Methods("GET")
 }
 
 func (a *App) hello(w http.ResponseWriter, r *http.Request) {
-	response := "transforming..."
-	trans := XsltTransform{}
-	trans.load()
+	xsltProc := XsltProc{}
+	response := xsltProc.transform()
 	respondWithJSON(w, http.StatusOK, response)
 }
 
-func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := json.Marshal(payload)
+func respondWithJSON(w http.ResponseWriter, code int, response []byte) {
+	// response, _ := json.Marshal(payload)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/xml")
 	w.WriteHeader(code)
 	w.Write(response)
 }
