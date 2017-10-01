@@ -1,9 +1,9 @@
 package main
 
 import (
-  "fmt"
-  "os"
-  "strconv"
+	"fmt"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -25,7 +25,9 @@ func main() {
 	host := REDIS_HOST
 	port := REDIS_PORT
 	db, err := strconv.ParseInt(REDIS_DB, 10, 0)
-  fmt.Println(db, err)
+	if err != nil {
+		fmt.Println(db, err)
+	}
 
 	a := App{}
 	a.Initialize(host, port, int(db))

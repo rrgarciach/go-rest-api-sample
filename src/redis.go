@@ -1,24 +1,24 @@
 package main
 
 import (
-  "fmt"
+	"fmt"
 
 	"github.com/go-redis/redis"
 )
 
 type Redis struct {
-  RedisClient *redis.Client
+	RedisClient *redis.Client
 }
 
 func (redisClient *Redis) Initialize(addr, port string, db int) {
-  RedisClient := redis.NewClient(&redis.Options{
-    Addr: addr + ":" + port,
-    Password: "",
-    DB: 0,
-  })
-  pong, err := RedisClient.Ping().Result()
-  fmt.Println(pong, err)
-  redisClient.ExampleClient(RedisClient)
+	RedisClient := redis.NewClient(&redis.Options{
+		Addr:     addr + ":" + port,
+		Password: "",
+		DB:       0,
+	})
+	pong, err := RedisClient.Ping().Result()
+	fmt.Println(pong, err)
+	redisClient.ExampleClient(RedisClient)
 }
 
 func (redisClient *Redis) ExampleClient(RedisClient *redis.Client) {
