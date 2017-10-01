@@ -13,7 +13,12 @@ import (
 type FetchXml struct{}
 
 func (fetchXml *FetchXml) getFetchXml() (err error) {
-	url := "https://devapi.foundationmedicine.com/FMI.CRM.Integration.Query/api/query/getFetchXml?functionName=xgetservicerequestnotes"
+	var GET_FETCH_XML_URL string
+	if GET_FETCH_XML_URL = os.Getenv("GET_FETCH_XML_URL"); GET_FETCH_XML_URL == "" {
+		return errors.New("No GET_FETCH_XML_URL was defined.")
+	}
+
+	url := GET_FETCH_XML_URL
 	filepath := "./assets/fetch.xml"
 	// Create the file
 	out, err := os.Create(filepath)

@@ -35,7 +35,8 @@ func (a *App) xsltprocXML(w http.ResponseWriter, r *http.Request) {
 	}
 
 	xsltProc := XsltProc{}
-	response := xsltProc.transform()
+	params := r.URL.Query()
+	response := xsltProc.transform(params)
 
 	respondWithXML(w, http.StatusOK, response)
 }

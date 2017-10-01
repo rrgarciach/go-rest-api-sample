@@ -1,5 +1,6 @@
 /**/**/gin-bin
-dump.rdb
+/dump.rdb
+/docker-compose-prod.yml
 
 /src/assets/fetch.xml
 /src/assets/stylesheet.xslt

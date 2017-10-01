@@ -12,6 +12,7 @@ services:
       - "3030:3000"
     environment:
       PORT: 3030
+      GET_FETCH_XML_URL: http://google.com
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
