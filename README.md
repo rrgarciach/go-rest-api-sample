@@ -1,6 +1,8 @@
 # Go REST API microservice sample with Redis
-## WORK IN PROGRESS!!!
-![Image of Gopher](https://cdn-images-1.medium.com/max/500/1*vHUiXvBE0p0fLRwFHZuAYw.gif)
+
+### WORK IN PROGRESS!!!
+
+This is a deployable REST API microservice in Go that receives (or fetches) an XML document and processes it against an XSLT by receiving parameters to produce a final XML document output. This is a work in progress that has pending its tests and additional features such as Redis caching.
 
 ## Getting Started
 
@@ -21,3 +23,6 @@
 - Implement redis route-caching system ?
 - Implement route for "Accept: application/json" headers
 - Unit tests
+
+## WORK IN PROGRESS!!!
+![Image of Gopher](https://cdn-images-1.medium.com/max/500/1*vHUiXvBE0p0fLRwFHZuAYw.gif)
