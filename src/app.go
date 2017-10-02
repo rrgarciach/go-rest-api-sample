@@ -24,12 +24,29 @@ func (a *App) Run(addr string) {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/xsltproc", a.xsltprocXML).Methods("GET").Headers("Accept", "application/xml")
+	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocFetchXml).Methods("GET").Headers("Accept", "application/xml")
+	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocXml).Methods("POST").Headers("Accept", "application/xml", "Content-Type", "application/xml")
 }
 
-func (a *App) xsltprocXML(w http.ResponseWriter, r *http.Request) {
-	fetchXml := FetchXml{}
-	err := fetchXml.getFetchXml()
+func (a *App) xsltprocFetchXml(w http.ResponseWriter, r *http.Request) {
+	fetchXmlService := FetchXmlService{}
+
+	err := fetchXmlService.getFetchXml()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	xsltProc := XsltProc{}
+	params := r.URL.Query()
+	response := xsltProc.transform(params)
+
+	respondWithXML(w, http.StatusOK, response)
+}
+
+func (a *App) xsltprocXml(w http.ResponseWriter, r *http.Request) {
+	fetchXmlService := FetchXmlService{}
+
+	err := fetchXmlService.createXmlFile(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
