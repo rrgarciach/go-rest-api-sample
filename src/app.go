@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -25,11 +26,13 @@ func (a *App) Run(addr string) {
 
 func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocFetchXml).Methods("GET").Headers("Accept", "application/xml")
-	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocXml).Methods("POST").Headers("Accept", "application/xml", "Content-Type", "application/xml")
+	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocXml).Methods("POST").Headers("Accept", "text/xml", "Content-Type", "text/xml")
 }
 
 func (a *App) xsltprocFetchXml(w http.ResponseWriter, r *http.Request) {
 	fetchXmlService := FetchXmlService{}
+
+	fmt.Println("Request received:", r.Method, r.URL)
 
 	err := fetchXmlService.getFetchXml()
 	if err != nil {
@@ -46,6 +49,8 @@ func (a *App) xsltprocFetchXml(w http.ResponseWriter, r *http.Request) {
 func (a *App) xsltprocXml(w http.ResponseWriter, r *http.Request) {
 	fetchXmlService := FetchXmlService{}
 
+	fmt.Println("Request received:", r.Method, r.URL)
+
 	err := fetchXmlService.createXmlFile(r.Body)
 	if err != nil {
 		log.Fatal(err)
@@ -59,7 +64,7 @@ func (a *App) xsltprocXml(w http.ResponseWriter, r *http.Request) {
 }
 
 func respondWithXML(w http.ResponseWriter, code int, response []byte) {
-	w.Header().Set("Content-Type", "application/xml")
+	w.Header().Set("Content-Type", "text/xml")
 	w.WriteHeader(code)
 	w.Write(response)
 }
