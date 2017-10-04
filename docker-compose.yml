@@ -1,6 +1,7 @@
 version: '2'
 services:
-  app:
+  xslt-api:
+    container_name: xslt-api
     build: .
     command: /go/bin/gin run main.go
     volumes:
@@ -18,3 +19,4 @@ services:
       REDIS_DB: 0
   # redis:
   #   image: redis:3.2.10-alpine
+    network_mode: bridge
