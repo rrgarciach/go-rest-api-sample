@@ -7,8 +7,8 @@ services:
     volumes:
       - ./src:/go/src/app
     working_dir: /go/src/app
-    # depends_on:
-    #   - redis
+    depends_on:
+      - redis
     ports:
       - "3030:3000"
     environment:
@@ -17,6 +17,20 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
-  # redis:
-  #   image: redis:3.2.10-alpine
+    external_links:
+      - redis
+      - query-api
     network_mode: bridge
+    # networks:
+    #   - fmi
+  redis:
+    container_name: redis
+    image: redis:3.2.10-alpine
+    network_mode: bridge
+    # networks:
+    #   - fmi
+    # external_links:
+    #   - xslt-api
+# networks:
+#   fmi:
+#     driver: bridge

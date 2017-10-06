@@ -9,15 +9,17 @@ import (
 )
 
 type App struct {
-	Router *mux.Router
+	Router      *mux.Router
+	redisClient Redis
 }
 
 func (a *App) Initialize(addr, port string, db int) {
 	a.Router = mux.NewRouter()
-	a.initializeRoutes()
+	// a.initializeRoutes()
 
-	// redisClient := Redis{}
-	// redisClient.Initialize(addr, port, db)
+	redisClient := Redis{}
+	redisClient.Initialize(addr, port, db)
+	// a.redisClient.PubSubConn()
 }
 
 func (a *App) Run(addr string) {
@@ -25,7 +27,7 @@ func (a *App) Run(addr string) {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocFetchXml).Methods("GET").Headers("Accept", "application/xml")
+	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocFetchXml).Methods("GET").Headers("Accept", "text/xml")
 	a.Router.HandleFunc("/api/v1/xsltproc", a.xsltprocXml).Methods("POST").Headers("Accept", "text/xml", "Content-Type", "text/xml")
 }
 

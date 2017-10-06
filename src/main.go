@@ -21,7 +21,7 @@ func main() {
 	if REDIS_DB = os.Getenv("REDIS_DB"); REDIS_DB == "" {
 		REDIS_DB = "0"
 	}
-
+	fmt.Println(os.Getenv("REDIS_HOST"))
 	host := REDIS_HOST
 	port := REDIS_PORT
 	db, err := strconv.ParseInt(REDIS_DB, 10, 0)
@@ -30,7 +30,6 @@ func main() {
 	}
 
 	a := App{}
+	// a.Run(":" + PORT)
 	a.Initialize(host, port, int(db))
-
-	a.Run(":" + PORT)
 }

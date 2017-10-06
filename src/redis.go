@@ -2,45 +2,84 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"strings"
 
 	"github.com/go-redis/redis"
 )
 
 type Redis struct {
-	RedisClient *redis.Client
+	client *redis.Client
+	pubsub *redis.PubSub
 }
 
 func (redisClient *Redis) Initialize(addr, port string, db int) {
-	RedisClient := redis.NewClient(&redis.Options{
+	fmt.Println("Initializing redis...")
+	client := redis.NewClient(&redis.Options{
 		Addr:     addr + ":" + port,
 		Password: "",
 		DB:       0,
 	})
-	pong, err := RedisClient.Ping().Result()
+	pong, err := client.Ping().Result()
 	fmt.Println(pong, err)
-	redisClient.ExampleClient(RedisClient)
+
+	fmt.Println("Subscribing to xsltproc channel...")
+	pubsub := client.Subscribe("xsltproc")
+
+	for i := 0; i < 1; i = 0 {
+		msg, err := pubsub.ReceiveMessage()
+		if err != nil {
+			panic(err)
+		}
+		// fmt.Println(msg.Channel, msg.Payload)
+
+		message := strings.Split(msg.Payload, "#")
+		params := "'" + message[0] + "'"
+		data := message[1]
+
+		fetchXmlService := FetchXmlService{}
+		err = fetchXmlService.createXmlFileFromString(data)
+		if err != nil {
+			log.Fatal(err)
+		}
+		xsltProc := XsltProc{}
+		result := xsltProc.transformFromString(params)
+
+		err = client.Publish("fetchxml", string(result[:])).Err()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Published to fetchxml channel")
+	}
 }
 
+// func (redisClient *Redis) PubSubConn() {
+// 	fmt.Println("Subscribing to xsltproc channel...")
+// 	redisClient.pubsub = redisClient.client.Subscribe("xsltproc")
+// 	// defer pubsub.Close()
+//
+// 	// subscr, err := pubsub.ReceiveTimeout(time.Second)
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+// 	// fmt.Println(subscr)
+//
+// 	// err = client.Publish("xsltproc", "hello").Err()
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+// 	for i := 0; i < 1; i = 0 {
+// 		msg, err := redisClient.pubsub.ReceiveMessage()
+// 		if err != nil {
+// 			fmt.Println("error while receiving message")
+// 			panic(err)
+// 		}
+// 		fmt.Println(msg.Channel, msg.Payload)
+// 	}
+// 	// msgCh := pubsub.Channel()
+// 	// fmt.Println(msgCh)
+// }
+
 func (redisClient *Redis) ExampleClient(RedisClient *redis.Client) {
-	err := RedisClient.Set("key", "value", 0).Err()
-	if err != nil {
-		panic(err)
-	}
-
-	val, err := RedisClient.Get("key").Result()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("key", val)
-
-	val2, err := RedisClient.Get("key2").Result()
-	if err == redis.Nil {
-		fmt.Println("key2 does not exists")
-	} else if err != nil {
-		panic(err)
-	} else {
-		fmt.Println("key2", val2)
-	}
-	// Output: key value
 	// key2 does not exists
 }

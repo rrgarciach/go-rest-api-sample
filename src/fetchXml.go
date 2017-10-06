@@ -163,3 +163,25 @@ func (fetchXmlService *FetchXmlService) createXmlFile(data io.ReadCloser) (err e
 
 	return nil
 }
+
+func (fetchXmlService *FetchXmlService) createXmlFileFromString(data string) (err error) {
+	filepath := "./assets/fetch.xml"
+
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Writer the body to file
+	// buf := new(bytes.Buffer)
+	// buf.ReadFrom(data)
+	xmlReader := bytes.NewReader([]byte(data))
+	_, err = io.Copy(out, xmlReader)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
